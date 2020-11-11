@@ -1,5 +1,6 @@
 package com.learn.shardingspringboot;
 
+import com.learn.shardingspringboot.mapper.ShardingMapper;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,9 @@ class ShardingspringbootApplicationTests {
 	@Resource
 	private DataSource dataSource;
 
+	@Resource
+	private ShardingMapper mapper;
+
 	@Test
 	void contextLoads() {
 		logger.info("测试开始...");
@@ -38,6 +42,16 @@ class ShardingspringbootApplicationTests {
 		rs.close();
 		statement.close();
 		connection.close();
+	}
+
+
+	@Test
+	public void testInsertMybatis(){
+		logger.info("mybatis 插入开始");
+		for(int i=5;i<10;i++){
+			mapper.insert("order-name_" + i,"user_" + i, i);
+		}
+		logger.info("mybatis 插入结束");
 	}
 
 }
