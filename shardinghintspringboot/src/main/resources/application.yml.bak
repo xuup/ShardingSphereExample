@@ -1,0 +1,32 @@
+
+spring:
+  shardingsphere:
+    datasource:
+      ds_0: org.apache.commons.dbcp2.BasicDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/ds0
+        username: root
+        password: 123456
+
+      ds_1: org.apache.commons.dbcp2.BasicDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/ds1
+        username: root
+        password: 123456
+      names: ds_0
+
+    sharding:
+      default-database-strategy:
+        hint:
+          algorithm-class-name: com.example.shardinghintspringboot.cusAlgo.HintAlgorithm
+
+      tables:
+        t_order:
+          actual-data-nodes: ds_$->{0..1}.order_1
+
+      binding-tables:
+        order_1
+
+    props:
+      sql.show: true
+
